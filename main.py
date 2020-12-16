@@ -1,14 +1,15 @@
 from time import sleep
 import random
 
-#Сделать кнопку назад
-#Сделать команду help
-#Залить на Git
-#Закинуть проверку на вводимую команду в функцию
-#Проверка на введенное кол-во повторений
-#Сделать красивый вывод меню
+# Сделать кнопку назад
+# Сделать команду help
+# Залить на Git
+# Закинуть проверку на вводимую команду в функцию
+# Проверка на введенное кол-во повторений
+# Сделать красивый вывод меню
 
-def do_exercise(quantity = 15, repeats = 3, **kwargs):
+
+def do_exercise(quantity=15, repeats=3, **kwargs):
     quantity = int(quantity)
     repeats = int(repeats)
     energy_coast = quantity * repeats * kwargs['Энергия']
@@ -22,6 +23,7 @@ def do_exercise(quantity = 15, repeats = 3, **kwargs):
             you[element] += int(quantity * repeats * coefficient)
     getting_stronger()
     return show_stats()
+
 
 def getting_stronger():
     print('\n*пыхтишь потеешь*')
@@ -40,7 +42,7 @@ def getting_stronger():
 def show_stats():
     print('_' * 22)
     for x, y in you.items():
-        print('|{: <12}|{: >7}|'.format(x, y) \
+        print('|{: <12}|{: >7}|'.format(x, y)
         + '\n|' + '_'*12 + '|' + '_'*7 + '|')
 
 
