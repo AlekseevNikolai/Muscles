@@ -46,7 +46,7 @@ def show_stats():
 
 def show_menu():
     print('Статистика   Продолжить качаца   Сохраниться     Сбросить результат  Помощь\n')
-    #choice = input()
+    # choice = input()
 
 
 def filter_ex(input_word, dict_part):
