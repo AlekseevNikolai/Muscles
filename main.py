@@ -3,7 +3,6 @@ import random
 
 # Сделать кнопку назад
 # Сделать команду help
-# Залить на Git
 # Закинуть проверку на вводимую команду в функцию
 # Проверка на введенное кол-во повторений
 # Сделать красивый вывод меню
@@ -72,7 +71,7 @@ def back_command(latest_path):
 
 def choose_exercise():
     # Выбор группы мышц
-    print('Чё качнем?')
+    print('\nЧё качнем?')
     print(' или '.join(list(exercises.keys())) + '\n')
     body_part = input()
     body_part = filter_ex(body_part, exercises)
@@ -97,55 +96,55 @@ def choose_exercise():
 
 
 def scene1():
-    print('Как тебя зовут сопляк?')
+    print('Тренер: Как тебя зовут сопляк?')
     you['Имя'] = input()
     sleep(1)
-    print('{} респект, что залетел к нам в зал!'.format(you['Имя']))
+    print('Тренер: {} респект, что залетел к нам в зал!'.format(you['Имя']))
     sleep(1)
-    print('Но дрищ ты конечно сказочный, давай зафиксируем твои начальные показатели')
+    print('Тренер: Но дрищ ты конечно сказочный, давай зафиксируем твои начальные показатели')
     sleep(1)
     show_stats()
     print('\n#шлеп на enter#')
     input()
-    print('Пиздец...')
+    print('Тренер: Пиздец...')
     sleep(1)
-    print('Ладно, и не таких натягивали. Проведу тебе маленьки ликбез.\n')
-    print('Статистика   Продолжить качаца   Сохраниться     Сбросить результат  Помощь\n')
+    print('Тренер: Ладно, и не таких натягивали. Проведу тебе маленьки ликбез.')
+    #print('Статистика   Продолжить качаца   Сохраниться     Сбросить результат  Помощь\n')
     sleep(1)
-    print('Вот это меню. Типа ты ко мне подошел, понял да? Чтобы ко мне подойти, ну т.е. вызвать меню,\
-    ты просто, как ебалан посреди зала должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".')
-    print('Попробуй. \n')
-    command = input()
+    print('Тренер: Если тебе нужно что то сделать, то только через меня, усек? Чтобы я подошел, \
+ты просто, как ебалан посреди зала должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".')
+    print('Тренер: Попробуй. \n')
+    command = input('{} :'.format(you['Имя'])) # Написать меню
     command = filter_ex(command, commands)
     while not command:
-        print('{} Ты должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".\n'
+        print('Тренер: {} Ты должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".\n'
               .format(abuse[random.randint(0, len(abuse) - 1)]))
-        command = input()
+        command = input('{} :'.format(you['Имя']))
         command = filter_ex(command, commands)
-    current_path = commands[command]  # нужна чтобы отслеживать текущее расположение пользотваеля в структуре меню
+    #current_path = commands[command]  # нужна чтобы отслеживать текущее расположение пользотваеля в структуре меню
     commands[command]()
-    print('Здесь ты указываешь че те надо. Пока могу тебе только предложить посмотреть статистику или уже начать качаться.')
-    command = input()
+    print('Тренер: Здесь ты указываешь че те надо. Пока могу тебе только предложить посмотреть статистику или уже начать качаться.')
+    command = input('{} :'.format(you['Имя']))  # Выбрать пункт меню
     command = filter_ex(command, menu)
-    while not command:
-        print('{} Выбери из того, что тебе предложено, свободы слова тут нет.".\n'
+    while command not in 'Статистика Продолжить качаца':
+        print('Тренер: {} Либо статистика, либо качаться.".\n'
               .format(abuse[random.randint(0, len(abuse) - 1)]))
         command = input()
         command = filter_ex(command, menu)
-    latest_path, current_path = current_path, menu[command]
+    #latest_path, current_path = current_path, menu[command]
     menu[command]()
-    print('\nЧтобы вернуться назад, так и скажи "Назад", ну или "Back", если ты такой уж ахуенный билингв. ')
-    command = input()
-    command = filter_ex(command, commands)
-    while not command:
-        print('{} Просто скажи: "Назад" или "Back".\n'
-              .format(abuse[random.randint(0, len(abuse) - 1)]))
-        command = input()
-        command = filter_ex(command, menu)
-    commands[command](latest_path)
-    print('Ну вот и вернулись в зад.')
-    print('Если нужна будет помощь кричи как маленькая девочка "Памагите!",\
-        а там посмотрим чем я смогу тебе помочь. Дальше сам решай хули тебе тут делать. \n')
+    #print('\nЧтобы вернуться назад, так и скажи "Назад", ну или "Back", если ты такой уж ахуенный билингв. ')
+    #command = input()
+    #command = filter_ex(command, commands)
+    #while not command:
+    #    print('{} Просто скажи: "Назад" или "Back".\n'
+    #          .format(abuse[random.randint(0, len(abuse) - 1)]))
+    #    command = input()
+    #    command = filter_ex(command, menu)
+    #commands[command](latest_path)
+    #print('Ну вот и вернулись в зад.')
+    print('\nЕсли нужна будет помощь кричи как маленькая девочка "Памагите!",\
+а там посмотрим чем я смогу тебе помочь. Дальше сам решай хули тебе тут делать. \n')
     sleep(1)
 
 
@@ -165,7 +164,8 @@ def start_game():
     you['Энергия'] = 100
     if you['Дней в зале'] == 1:
         scene1()  # Базар с тренером
-    print('Ну хеллоу, май диар {}'.format(you['Имя']))
+    if you['Дней в зале'] != 1:
+        print('Ну хеллоу, май диар {}'.format(you['Имя']))
     while you['Энергия'] > 85:
         choose_exercise()
     end_of_the_day()
