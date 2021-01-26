@@ -23,7 +23,7 @@ def do_exercise(quantity=15, repeats=3, **kwargs):
     getting_stronger()
     return show_stats()
 
-#new line to check git revert
+
 def getting_stronger():
     print('\n*пыхтишь потеешь*')
     print('Оуу маай')
@@ -45,7 +45,7 @@ def show_stats():
 
 
 def show_menu():
-    print('--Статистика   Продолжить качаца   Сохраниться     Сбросить результат  Помощь\n')
+    print('Статистика   Продолжить качаца   Сохраниться     Сбросить результат  Помощь\n')
     # choice = input()
 
 
