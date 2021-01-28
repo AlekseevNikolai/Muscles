@@ -1,11 +1,12 @@
 from time import sleep
 import random
 
-# Сделать кнопку назад
-# Сделать команду help
+# menu_comands, menu и еще одна херня, убрать в одно
+# убрать проверку на команду в фильтр
 # Закинуть проверку на вводимую команду в функцию
 # Проверка на введенное кол-во повторений
-# Сделать красивый вывод меню
+# Выход в меню во время занятия
+
 
 
 def do_exercise(quantity=15, repeats=3, **kwargs):
@@ -42,11 +43,12 @@ def show_stats():
     print('_' * 22)
     for x, y in you.items():
         print('|{: <12}|{: >7}|'.format(x, y) + '\n|' + '_' * 12 + '|' + '_' * 7 + '|')
+    print('\n#шлеп на enter#')
+    input()
 
 
 def show_menu():
-    print('Статистика   Продолжить качаца   Сохраниться     Сбросить результат  Помощь\n')
-    # choice = input()
+    print('\n--Статистика\n--Продолжить качаца\n--Сохраниться\n--Сбросить результат\n--Помощь\n')
 
 
 def filter_ex(input_word, dict_part):
@@ -65,10 +67,6 @@ def filter_ex(input_word, dict_part):
         return None
 
 
-def back_command(latest_path):
-    latest_path()
-
-
 def choose_exercise():
     # Выбор группы мышц
     print('\nЧё качнем?')
@@ -81,15 +79,15 @@ def choose_exercise():
         body_part = filter_ex(body_part, exercises)
 
     # Выбор упражнения
-    print('Окей, тут можно: {}\n'.format(', или '.join(list(exercises[body_part].keys()))))
+    print('Тренер: Окей, тут можно: {}\n'.format(', или '.join(list(exercises[body_part].keys()))))
     exercise_word = input()
     exercise_word = filter_ex(exercise_word, exercises[body_part])
     while not exercises[body_part].get(exercise_word, None):
-        print('{} Еще раз повторяю: {}\n'.format(abuse[random.randint(0, len(abuse) - 1)],
+        print('Тренер: {} Еще раз повторяю: {}\n'.format(abuse[random.randint(0, len(abuse) - 1)],
               ', или '.join(list(exercises[body_part].keys()))))
         exercise_word = input()
         exercise_word = filter_ex(exercise_word, exercises[body_part])
-    print('Сколько повторений и сколько подходов?\n')
+    print('Тренер: Сколько повторений и сколько подходов?\n')
     quantity = input()
     repeats = input()
     do_exercise(quantity, repeats, **exercises[body_part][exercise_word])
@@ -109,12 +107,11 @@ def scene1():
     print('Тренер: Пиздец...')
     sleep(1)
     print('Тренер: Ладно, и не таких натягивали. Проведу тебе маленьки ликбез.')
-    #print('Статистика   Продолжить качаца   Сохраниться     Сбросить результат  Помощь\n')
     sleep(1)
     print('Тренер: Если тебе нужно что то сделать, то только через меня, усек? Чтобы я подошел, \
-ты просто, как ебалан посреди зала должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".')
+    ты просто, как ебалан посреди зала должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".')
     print('Тренер: Попробуй. \n')
-    command = input('{} :'.format(you['Имя'])) # Написать меню
+    command = input('{} :'.format(you['Имя'])) 
     command = filter_ex(command, commands)
     while not command:
         print('Тренер: {} Ты должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".\n'
@@ -126,7 +123,7 @@ def scene1():
     print('Тренер: Здесь ты указываешь че те надо. Пока могу тебе только предложить посмотреть статистику или уже начать качаться.')
     command = input('{} :'.format(you['Имя']))  # Выбрать пункт меню
     command = filter_ex(command, menu)
-    while command not in 'Статистика Продолжить качаца':
+    while not command or command not in 'Статистика Продолжить качаца':
         print('Тренер: {} Либо статистика, либо качаться.".\n'
               .format(abuse[random.randint(0, len(abuse) - 1)]))
         command = input()
@@ -144,12 +141,25 @@ def scene1():
     #commands[command](latest_path)
     #print('Ну вот и вернулись в зад.')
     print('\nЕсли нужна будет помощь кричи как маленькая девочка "Памагите!",\
-а там посмотрим чем я смогу тебе помочь. Дальше сам решай хули тебе тут делать. \n')
+    а там посмотрим чем я смогу тебе помочь. Дальше сам решай хули тебе тут делать. \n')
     sleep(1)
 
+def scene2():
+    print('Ну хеллоу, май диар {}'.format(you['Имя']))
+    while you['Энергия'] > 85:
+        
+        choose_exercise()
 
 def end_of_the_day():
-    print('Братан, ты спекся...')
+    print('Тренер: Братан, ты спекся...')
+    print('Тренер: Капельку в трусы то пустил?')
+    print('Тренер: Кайф словил?')
+    answer = input()
+    if answer == 'Да':
+        print('Тренер: Ну красавчик, так и должно быть!')
+    elif answer == 'Нет':
+        print('Тренер: Ну тогда я тебя в следующий раз так вздрючу сыч дрищавый.')
+    else: print('Тренер: Понятно, даже ответить нормально не можешь, значит точно заебался.')
     sleep(1)
     print('Приходи послезавтра, отдохнувший, на протеине и с мощным стояком на железо!')
     print('Возможно я тебя не вспомню, у меня от анаболиков боли коликов.')
@@ -162,11 +172,12 @@ def end_of_the_day():
 def start_game():
     print('Day {}\n'.format(you['Дней в зале']))
     you['Энергия'] = 100
+    #you['Дней в зале'] = 2
     if you['Дней в зале'] == 1:
         scene1()  # Базар с тренером
     if you['Дней в зале'] != 1:
         print('Ну хеллоу, май диар {}'.format(you['Имя']))
-    while you['Энергия'] > 85:
+    while you['Энергия'] > 85:        
         choose_exercise()
     end_of_the_day()
 
@@ -174,10 +185,9 @@ def start_game():
 you = {'Имя': 'Сосяндр', 'Дней в зале': 1, 'Энергия': 100, 'Ручищи': 0,
        'Сисяндры': 0, 'Пузан': 0, 'Спинища': 0, 'Ножки': 0}
 
-menu_commands = ['меню', 'menu', 'Я еблан, помогите мне.', 'назад', 'back']
+menu_commands = ['меню', 'menu', 'Я еблан, помогите мне.']
 
-commands = {'меню': show_menu, 'menu': show_menu, 'Я еблан, помогите мне.': show_menu,
-            'Назад': back_command, 'Back': back_command}
+commands = {'меню': show_menu, 'menu': show_menu, 'Я еблан, помогите мне.': show_menu}
 
 menu = {'Статистика': show_stats, 'Продолжить качаца': choose_exercise, 'Сохраниться': [], 'Сбросить результат': [], 'Помощь': []}
 
