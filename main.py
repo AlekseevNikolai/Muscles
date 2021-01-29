@@ -1,11 +1,9 @@
 from time import sleep
 import random
+from terminaltables import DoubleTable
 
-# menu_comands, menu и еще одна херня, убрать в одно
-# Закинуть проверку на вводимую команду в функцию
-# Проверка на введенное кол-во повторений
 # Выход в меню во время занятия
-
+# Сделать затычки для пунктов меню
 
 
 def do_exercise(quantity=15, repeats=3, **kwargs):
@@ -13,7 +11,7 @@ def do_exercise(quantity=15, repeats=3, **kwargs):
     repeats = int(repeats)
     energy_coast = quantity * repeats * kwargs['Энергия']
     if you['Энергия'] < energy_coast:
-        print('Чувак, ты спекся... Силёнок не хватает.')
+        print('Тренер: Чувак, ты спекся... Силёнок не хватает.')
         return None
     for element, coefficient in kwargs.items():
         if element == 'Энергия':
@@ -39,12 +37,11 @@ def getting_stronger():
 
 
 def show_stats():
-    print('_' * 22)
-    for x, y in you.items():
-        print('|{: <12}|{: >7}|'.format(x, y) + '\n|' + '_' * 12 + '|' + '_' * 7 + '|')
-    print('\n#шлеп на enter#')
-    input()
-
+    table_data = []
+    for key, item in you.items():
+        table_data.append([key, item])
+    table = DoubleTable(table_data)
+    print(table.table)
 
 def show_menu():
     print('\n--Статистика\n--Продолжить качаца\n--Сохраниться\n--Сбросить результат\n--Помощь\n')
@@ -58,7 +55,7 @@ def filter_ex(input_word, dict_part):
     if len(result) == 1:
         command = result[0]
     elif len(result) > 1:
-        print('Уточни, что из этого: {},'.format(' или '.join(result)))
+        print('Тренер: Уточни, что из этого: {},'.format(' или '.join(result)))
         input_word = input('{} :'.format(you['Имя'])) 
         command = filter_ex(input_word, dict_part)
     else:
@@ -73,25 +70,25 @@ def filter_ex(input_word, dict_part):
 
 def choose_exercise():
     # Выбор группы мышц
-    print('\nЧё качнем?')
-    print(' или '.join(list(exercises.keys())) + '\n')
-    body_part = input('{} :'.format(you['Имя'])) 
+    print('\nТренер: Чё качнем?')
+    print('Тренер: {}'.format(' или '.join(list(exercises.keys())) + '\n'))
+    body_part = input('{}: '.format(you['Имя'])) 
     body_part = filter_ex(body_part, exercises)
     
     # Выбор упражнения
     print('Тренер: Окей, тут можно: {}\n'.format(', или '.join(list(exercises[body_part].keys()))))
-    exercise_word = input('{} :'.format(you['Имя'])) 
+    exercise_word = input('{}: '.format(you['Имя'])) 
     exercise_word = filter_ex(exercise_word, exercises[body_part])
     
     print('Тренер: Сколько повторений и сколько подходов?\n')
-    quantity = input('{} : Повторений - '.format(you['Имя']))
+    quantity = input('{}: Повторений - '.format(you['Имя']))
     while not quantity.isdigit():
         print('Тренер: Введи число, умник.')
-        quantity = input('{} : Повторений - '.format(you['Имя']))
-    repeats = input('{} : Подходов - '.format(you['Имя'])) 
+        quantity = input('{}: Повторений - '.format(you['Имя']))
+    repeats = input('{}: Подходов - '.format(you['Имя'])) 
     while not repeats.isdigit():
         print('Тренер: Введи число, умник.')
-        repeats = input('{} : Повторений - '.format(you['Имя']))
+        repeats = input('{}: Повторений - '.format(you['Имя']))
     do_exercise(quantity, repeats, **exercises[body_part][exercise_word])
 
 
@@ -109,14 +106,14 @@ def scene1():
     print('Тренер: Ладно, и не таких натягивали. Проведу тебе маленьки ликбез.')
     sleep(1)
     print('Тренер: Если тебе нужно что то сделать, то только через меня, усек? Чтобы я подошел, \
-    ты просто, как ебалан посреди зала должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".')
+ты просто, как ебалан посреди зала должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".')
     print('Тренер: Попробуй. \n')
-    command = input('{} :'.format(you['Имя'])) 
+    command = input('{}: '.format(you['Имя'])) 
     command = filter_ex(command, menu_commands)
     menu_commands[command]()
     print('Тренер: Здесь ты указываешь че те надо. Пока могу тебе только предложить посмотреть статистику или уже начать качаться.')
-    print('\nТренер: Если нужна будет помощь - зови.",\
-    а там посмотрим чем я смогу тебе помочь. Дальше сам решай хули тебе тут делать. \n')
+    print('Тренер: Если нужна будет помощь - зови,\
+а там посмотрим чем я смогу тебе помочь. Дальше сам решай хули тебе тут делать. \n')
     sleep(1)
 
 
@@ -124,7 +121,7 @@ def end_of_the_day():
     print('Тренер: Братан, ты спекся...')
     print('Тренер: Капельку в трусы то пустил?')
     print('Тренер: Кайф словил?')
-    answer = input('{} :'.format(you['Имя'])) 
+    answer = input('{}: '.format(you['Имя'])) 
     if answer.lower() == 'да':
         print('Тренер: Ну красавчик, так и должно быть!')
     elif answer.lower() == 'нет':
