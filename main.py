@@ -59,7 +59,7 @@ def filter_ex(input_word, dict_part):
         command = result[0]
     elif len(result) > 1:
         print('Уточни, что из этого: {},'.format(' или '.join(result)))
-        input_word = input()
+        input_word = input('{} :'.format(you['Имя'])) 
         command = filter_ex(input_word, dict_part)
     else:
         print('Тренер: {} Ты должен сказать: {} .\n'
@@ -75,17 +75,23 @@ def choose_exercise():
     # Выбор группы мышц
     print('\nЧё качнем?')
     print(' или '.join(list(exercises.keys())) + '\n')
-    body_part = input()
+    body_part = input('{} :'.format(you['Имя'])) 
     body_part = filter_ex(body_part, exercises)
     
     # Выбор упражнения
     print('Тренер: Окей, тут можно: {}\n'.format(', или '.join(list(exercises[body_part].keys()))))
-    exercise_word = input()
+    exercise_word = input('{} :'.format(you['Имя'])) 
     exercise_word = filter_ex(exercise_word, exercises[body_part])
     
     print('Тренер: Сколько повторений и сколько подходов?\n')
-    quantity = input('Повторений: ')
-    repeats = input('Подходов: ')
+    quantity = input('{} : Повторений - '.format(you['Имя']))
+    while not quantity.isdigit():
+        print('Тренер: Введи число, умник.')
+        quantity = input('{} : Повторений - '.format(you['Имя']))
+    repeats = input('{} : Подходов - '.format(you['Имя'])) 
+    while not repeats.isdigit():
+        print('Тренер: Введи число, умник.')
+        repeats = input('{} : Повторений - '.format(you['Имя']))
     do_exercise(quantity, repeats, **exercises[body_part][exercise_word])
 
 
@@ -118,10 +124,10 @@ def end_of_the_day():
     print('Тренер: Братан, ты спекся...')
     print('Тренер: Капельку в трусы то пустил?')
     print('Тренер: Кайф словил?')
-    answer = input()
-    if answer == 'Да':
+    answer = input('{} :'.format(you['Имя'])) 
+    if answer.lower() == 'да':
         print('Тренер: Ну красавчик, так и должно быть!')
-    elif answer == 'Нет':
+    elif answer.lower() == 'нет':
         print('Тренер: Ну тогда я тебя в следующий раз так вздрючу сыч дрищавый.')
     else: print('Тренер: Понятно, даже ответить нормально не можешь, значит точно заебался.')
     sleep(1)
@@ -141,7 +147,7 @@ def start_game():
         scene1()  # Базар с тренером
     if you['Дней в зале'] != 1:
         print('Ну хеллоу, май диар {}'.format(you['Имя']))
-    while you['Энергия'] > 85:        
+    while you['Энергия'] > 50:        
         choose_exercise()
     end_of_the_day()
 
