@@ -2,7 +2,6 @@ from time import sleep
 import random
 
 # menu_comands, menu и еще одна херня, убрать в одно
-# убрать проверку на команду в фильтр
 # Закинуть проверку на вводимую команду в функцию
 # Проверка на введенное кол-во повторений
 # Выход в меню во время занятия
@@ -54,17 +53,22 @@ def show_menu():
 def filter_ex(input_word, dict_part):
     """Возвращает точное значение команды в словаре dict_part в соотсветсвтии с введенной пользователем частью команды input_word.
     В случе нескольких соответствий выводит все варианты соответсвующие запросу и повторяет вызов функции."""
-    if not input_word:
-        return None
+    command = None
     result = list(filter(lambda x: input_word.lower() in x.lower(), list(dict_part.keys())))
     if len(result) == 1:
-        return result[0]
+        command = result[0]
     elif len(result) > 1:
         print('Уточни, что из этого: {},'.format(' или '.join(result)))
         input_word = input()
-        return filter_ex(input_word, dict_part)
+        command = filter_ex(input_word, dict_part)
     else:
-        return None
+        print('Тренер: {} Ты должен сказать: {} .\n'
+            .format(abuse[random.randint(0, len(abuse) - 1)], ' или '.join(dict_part.keys())))
+        command = input('{} :'.format(you['Имя']))
+        command = filter_ex(command, dict_part)
+    return command
+
+
 
 
 def choose_exercise():
@@ -73,23 +77,15 @@ def choose_exercise():
     print(' или '.join(list(exercises.keys())) + '\n')
     body_part = input()
     body_part = filter_ex(body_part, exercises)
-    while not exercises.get(body_part, None):
-        print(abuse[random.randint(0, len(abuse) - 1)] + ' или '.join(list(exercises.keys())))
-        body_part = input()
-        body_part = filter_ex(body_part, exercises)
-
+    
     # Выбор упражнения
     print('Тренер: Окей, тут можно: {}\n'.format(', или '.join(list(exercises[body_part].keys()))))
     exercise_word = input()
     exercise_word = filter_ex(exercise_word, exercises[body_part])
-    while not exercises[body_part].get(exercise_word, None):
-        print('Тренер: {} Еще раз повторяю: {}\n'.format(abuse[random.randint(0, len(abuse) - 1)],
-              ', или '.join(list(exercises[body_part].keys()))))
-        exercise_word = input()
-        exercise_word = filter_ex(exercise_word, exercises[body_part])
+    
     print('Тренер: Сколько повторений и сколько подходов?\n')
-    quantity = input()
-    repeats = input()
+    quantity = input('Повторений: ')
+    repeats = input('Подходов: ')
     do_exercise(quantity, repeats, **exercises[body_part][exercise_word])
 
 
@@ -102,8 +98,6 @@ def scene1():
     print('Тренер: Но дрищ ты конечно сказочный, давай зафиксируем твои начальные показатели')
     sleep(1)
     show_stats()
-    print('\n#шлеп на enter#')
-    input()
     print('Тренер: Пиздец...')
     sleep(1)
     print('Тренер: Ладно, и не таких натягивали. Проведу тебе маленьки ликбез.')
@@ -112,43 +106,13 @@ def scene1():
     ты просто, как ебалан посреди зала должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".')
     print('Тренер: Попробуй. \n')
     command = input('{} :'.format(you['Имя'])) 
-    command = filter_ex(command, commands)
-    while not command:
-        print('Тренер: {} Ты должен сказать "Меню". Или "Menu". Или "Я еблан, помогите мне.".\n'
-              .format(abuse[random.randint(0, len(abuse) - 1)]))
-        command = input('{} :'.format(you['Имя']))
-        command = filter_ex(command, commands)
-    #current_path = commands[command]  # нужна чтобы отслеживать текущее расположение пользотваеля в структуре меню
-    commands[command]()
+    command = filter_ex(command, menu_commands)
+    menu_commands[command]()
     print('Тренер: Здесь ты указываешь че те надо. Пока могу тебе только предложить посмотреть статистику или уже начать качаться.')
-    command = input('{} :'.format(you['Имя']))  # Выбрать пункт меню
-    command = filter_ex(command, menu)
-    while not command or command not in 'Статистика Продолжить качаца':
-        print('Тренер: {} Либо статистика, либо качаться.".\n'
-              .format(abuse[random.randint(0, len(abuse) - 1)]))
-        command = input()
-        command = filter_ex(command, menu)
-    #latest_path, current_path = current_path, menu[command]
-    menu[command]()
-    #print('\nЧтобы вернуться назад, так и скажи "Назад", ну или "Back", если ты такой уж ахуенный билингв. ')
-    #command = input()
-    #command = filter_ex(command, commands)
-    #while not command:
-    #    print('{} Просто скажи: "Назад" или "Back".\n'
-    #          .format(abuse[random.randint(0, len(abuse) - 1)]))
-    #    command = input()
-    #    command = filter_ex(command, menu)
-    #commands[command](latest_path)
-    #print('Ну вот и вернулись в зад.')
-    print('\nЕсли нужна будет помощь кричи как маленькая девочка "Памагите!",\
+    print('\nТренер: Если нужна будет помощь - зови.",\
     а там посмотрим чем я смогу тебе помочь. Дальше сам решай хули тебе тут делать. \n')
     sleep(1)
 
-def scene2():
-    print('Ну хеллоу, май диар {}'.format(you['Имя']))
-    while you['Энергия'] > 85:
-        
-        choose_exercise()
 
 def end_of_the_day():
     print('Тренер: Братан, ты спекся...')
@@ -185,9 +149,7 @@ def start_game():
 you = {'Имя': 'Сосяндр', 'Дней в зале': 1, 'Энергия': 100, 'Ручищи': 0,
        'Сисяндры': 0, 'Пузан': 0, 'Спинища': 0, 'Ножки': 0}
 
-menu_commands = ['меню', 'menu', 'Я еблан, помогите мне.']
-
-commands = {'меню': show_menu, 'menu': show_menu, 'Я еблан, помогите мне.': show_menu}
+menu_commands = {'Меню': show_menu, 'Menu': show_menu, 'Я еблан, помогите мне.': show_menu}
 
 menu = {'Статистика': show_stats, 'Продолжить качаца': choose_exercise, 'Сохраниться': [], 'Сбросить результат': [], 'Помощь': []}
 
